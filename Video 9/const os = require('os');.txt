@@ -1,0 +1,18 @@
+const os = require('os');
+const fs = require('fs');
+
+function getLocalIP() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address;
+      }
+    }
+  }
+  return 'IP not found';
+}
+
+const ip = getLocalIP();
+fs.writeFileSync('host-ip.txt', `Host IP: ${ip}\n`);
+console.log(`Host IP written to host-ip.txt: ${ip}`);
